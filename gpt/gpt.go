@@ -11,7 +11,7 @@ import (
 
 const BASEURL = "https://api.openai.com/v1/"
 
-// chatgpt 请求体
+// ChatGPT 请求体
 type ChatGPTResponseBody struct {
 	ID      string                   `json:"id"`
 	Object  string                   `json:"object"`
@@ -35,8 +35,9 @@ type ChatGPTRequestBody struct {
 }
 
 func Completions(msg string) (string, error) {
+	model := config.LoadConfig().Model
 	requestBody := ChatGPTRequestBody{
-		Model:            "text-davinci-003",
+		Model:            model,
 		Prompt:           msg,
 		MaxTokens:        2048,
 		TopP:             1,

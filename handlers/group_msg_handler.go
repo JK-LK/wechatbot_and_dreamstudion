@@ -31,6 +31,7 @@ func (g *GroupMessageHandler) handle(msg *openwechat.Message) error {
 	cfg := config.LoadConfig()
 	// 判断文本前缀是PictureToken，例如："生成图片"
 	if strings.Contains(g.msg.Content, cfg.PictureToken) {
+		log.Printf("开始生成图片%s", cfg.PictureToken)
 		return g.ReplyImage()
 	}
 	//如果是纯文本，使用ChatGPT进行回复

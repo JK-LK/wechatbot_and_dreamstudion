@@ -9,5 +9,6 @@
   "picture_height":512,
   "steps":30,
   "cfg_scale":7,
-  "picture_token":"生成图片"
+  "picture_token":"生成图片",
+  "model": "gpt-3.5-turbo"
 }
