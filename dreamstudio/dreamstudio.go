@@ -45,7 +45,7 @@ func TextToImage(msg string) (string, error) {
 		apiHost = "https://api.stability.ai"
 	}
 	reqUrl := apiHost + "/v1/generation/" + engineId + "/text-to-image"
-
+	log.Printf("url:%s", reqUrl)
 	textPrompts := []TextPrompt{
 		{
 			Text:   msg,
