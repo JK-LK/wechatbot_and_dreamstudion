@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-const BASEURL = "https://api.openai.com/v1/completions"
+const BASEURL = "https://api.openai.com/v1/chat/"
 
 // ChatGPT 请求体
 type ChatGPTResponseBody struct {
