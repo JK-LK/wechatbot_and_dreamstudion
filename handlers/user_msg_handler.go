@@ -7,7 +7,6 @@ import (
 	"github.com/869413421/wechatbot/gpt"
 	"github.com/eatmoreapple/openwechat"
 	"log"
-	"math/rand"
 	"os"
 	"strings"
 	"time"
@@ -70,11 +69,8 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 
 func (g *UserMessageHandler) ReplyImage(msg *openwechat.Message) error {
 	sender, err := msg.Sender()
-	if time.Now().Unix()-msg.CreateTime > 60 {
-		return nil
-	}
-	maxInt := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(5)
-	time.Sleep(time.Duration(maxInt+1) * time.Second)
+	//maxInt := rand.New(rand.NewSource(time.Now().UnixNano())).Intn(5)
+	//time.Sleep(time.Duration(maxInt+1) * time.Second)
 
 	log.Printf("Received User[%v], Content[%v], CreateTime[%v]", sender.NickName, msg.Content,
 		time.Unix(msg.CreateTime, 0).Format("2006/01/02 15:04:05"))
