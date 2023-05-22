@@ -73,6 +73,8 @@ func TextToImage(msg string) (string, error) {
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 
+	log.Printf("code:%d", res.StatusCode)
+
 	//当HTTP响应状态码不为200时，打印出响应主体的内容以供调试。
 	if res.StatusCode != 200 {
 		var body map[string]interface{}
