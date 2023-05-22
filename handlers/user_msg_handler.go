@@ -6,6 +6,7 @@ import (
 	"github.com/869413421/wechatbot/dreamstudio"
 	"github.com/869413421/wechatbot/gpt"
 	"github.com/eatmoreapple/openwechat"
+	"github.com/sashabaranov/go-openai"
 	"log"
 	"os"
 	"strings"
@@ -38,6 +39,24 @@ func NewUserMessageHandler() MessageHandlerInterface {
 	return &UserMessageHandler{}
 }
 
+// getRequestText 获取请求接口的文本，要做一些清晰
+func (g *UserMessageHandler) getRequestText(msg *openwechat.Message) []openai.ChatCompletionMessage {
+	// 1.去除空格以及换行
+	requestText := strings.TrimSpace(msg.Content)
+	requestText = strings.Trim(msg.Content, "\n")
+	if len(requestText) == 0 {
+		log.Println("user message is empty")
+		sessionText := make([]openai.ChatCompletionMessage, 0)
+		return sessionText
+	}
+	sessionText := make([]openai.ChatCompletionMessage, 0)
+	sessionText = append(sessionText, openai.ChatCompletionMessage{
+		Role:    openai.ChatMessageRoleUser,
+		Content: requestText,
+	})
+	return sessionText
+}
+
 // ReplyText 发送文本消息到群
 func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 接收私聊消息
@@ -45,8 +64,7 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	log.Printf("Received User %v Text Msg : %v", sender.NickName, msg.Content)
 
 	// 向GPT发起请求
-	requestText := strings.TrimSpace(msg.Content)
-	requestText = strings.Trim(msg.Content, "\n")
+	requestText := g.getRequestText(msg)
 	reply, err := gpt.Completions(requestText)
 	if err != nil {
 		log.Printf("gtp request error: %v \n", err)
