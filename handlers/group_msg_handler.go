@@ -6,6 +6,7 @@ import (
 	"github.com/869413421/wechatbot/dreamstudio"
 	"github.com/869413421/wechatbot/gpt"
 	"github.com/eatmoreapple/openwechat"
+	"github.com/sashabaranov/go-openai"
 	"log"
 	"math/rand"
 	"os"
@@ -45,6 +46,34 @@ func NewGroupMessageHandler() MessageHandlerInterface {
 	return &GroupMessageHandler{}
 }
 
+func (g *GroupMessageHandler) getRequestText(msg *openwechat.Message) []openai.ChatCompletionMessage {
+	// 1.去除空格以及换行
+	requestText := strings.TrimSpace(msg.Content)
+	requestText = strings.Trim(msg.Content, "\n")
+	if len(requestText) == 0 {
+		log.Println("user message is empty")
+		sessionText := make([]openai.ChatCompletionMessage, 0)
+		return sessionText
+	}
+
+	// 2.替换掉当前用户名称
+	replaceText := "@" + g.self.NickName
+	requestText = strings.TrimSpace(strings.ReplaceAll(g.msg.Content, replaceText, ""))
+	if len(requestText) == 0 {
+		log.Println("user message is empty")
+		sessionText := make([]openai.ChatCompletionMessage, 0)
+		return sessionText
+	}
+
+	sessionText := make([]openai.ChatCompletionMessage, 0)
+	sessionText = append(sessionText, openai.ChatCompletionMessage{
+		Role:    openai.ChatMessageRoleUser,
+		Content: requestText,
+	})
+	return sessionText
+
+}
+
 func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 接收群消息
 	sender, err := msg.Sender()
@@ -57,8 +86,7 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	}
 
 	// 替换掉@文本，然后向GPT发起请求
-	replaceText := "@" + sender.NickName
-	requestText := strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
+	requestText := g.getRequestText(msg)
 	reply, err := gpt.Completions(requestText)
 	if err != nil {
 		log.Printf("gtp request error: %v \n", err)
