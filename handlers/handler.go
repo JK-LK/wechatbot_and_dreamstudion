@@ -18,6 +18,7 @@ const (
 	GroupHandler = "group"
 	UserHandler  = "user"
 )
+const deadlineExceededText = "请求GPT服务器超时[裂开]得不到回复，请重新发送问题[旺柴]"
 
 // handlers 所有消息类型类型的处理器
 var handlers map[HandlerType]MessageHandlerInterface

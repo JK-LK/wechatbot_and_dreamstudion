@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"sync"
+	"time"
 )
 
 // Configuration 项目配置
@@ -13,6 +14,24 @@ type Configuration struct {
 	ApiKey string `json:"api_key"`
 	// 自动通过好友
 	AutoPass bool `json:"auto_pass"`
+	// 会话超时时间
+	SessionTimeout time.Duration `json:"session_timeout"`
+	// 清空会话口令
+	SessionClearToken string `json:"session_clear_token"`
+	// dreamstdio apikey
+	DreamStdioApiKey string `json:"dreamstdio_api_key"`
+	// dreamstdio模型名称
+	EngineId string `json:"engine_id"`
+	// 图像生成的高度
+	PicWidth uint `json:"picture_width"`
+	// 图像生成的高度
+	PicHeight uint `json:"picture_height"`
+	// 图像生成迭代次数
+	Steps uint `json:"steps"`
+	// 图像生成系数
+	CfgScale uint `json:"cfg_scale"`
+	// 图像生成识别指令
+	PictureToken string `json:"picture_token"`
 }
 
 var config *Configuration
