@@ -36,7 +36,7 @@ func (g *GroupMessageHandler) handle(msg *openwechat.Message) error {
 		return g.ReplyImage()
 	}
 	//如果是纯文本，使用ChatGPT进行回复
-	if g.msg.IsText() {
+	if msg.IsText() {
 		log.Printf("微信内容:%s", msg.Content)
 		return g.ReplyText(msg)
 	}
