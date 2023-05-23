@@ -59,7 +59,11 @@ func (g *GroupMessageHandler) getRequestText(msg *openwechat.Message) []openai.C
 	}
 
 	// 2.替换掉当前用户名称
-	replaceText := "@" + g.self.NickName
+	sender, err := msg.Sender()
+	if err != nil {
+		log.Printf("get sender error:%s", err)
+	}
+	replaceText := "@" + sender.Self().NickName
 	requestText = strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
 	if len(requestText) == 0 {
 		log.Println("user message is empty")
