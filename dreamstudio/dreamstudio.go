@@ -28,9 +28,9 @@ type TextPrompt struct {
 
 // DreamStdioRequestBody 请求体
 type DreamStdioRequestBody struct {
-	TextPrompts        []TextPrompt `json:"textPrompts"`
-	CfgScale           uint         `json:"cfgScale"`
-	ClipGuidancePreset string       `json:"clipGuidancePreset"`
+	TextPrompts        []TextPrompt `json:"text_prompts"`
+	CfgScale           uint         `json:"cfg_scale"`
+	ClipGuidancePreset string       `json:"clip_guidance_preset"`
 	Height             uint         `json:"height"`
 	Width              uint         `json:"width"`
 	Samples            uint         `json:"samples"`
