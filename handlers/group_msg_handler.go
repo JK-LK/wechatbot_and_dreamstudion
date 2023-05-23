@@ -37,6 +37,7 @@ func (g *GroupMessageHandler) handle(msg *openwechat.Message) error {
 	}
 	//如果是纯文本，使用ChatGPT进行回复
 	if g.msg.IsText() {
+		log.Printf("微信内容:%s", msg.Content)
 		return g.ReplyText(msg)
 	}
 	return nil
@@ -76,9 +77,7 @@ func (g *GroupMessageHandler) getRequestText(msg *openwechat.Message) []openai.C
 
 func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 接收群消息
-	sender, err := msg.Sender()
-	group := openwechat.Group{sender}
-	log.Printf("Received Group %v Text Msg : %v", group.NickName, msg.Content)
+	log.Printf("Received Group %v Text Msg : %v", g.group.NickName, msg.Content)
 
 	// 不是@的不处理
 	if !msg.IsAt() {
